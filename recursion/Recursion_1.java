@@ -552,10 +552,8 @@ public class Recursion_1 {
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
-		int[] arr = takeInputArray();
-		int k = sc.nextInt();
-		String[] ans = allSubsetsOfArrayWhichSumToK(arr, k);
-		for(String s : ans) System.out.println(s);
+		int n = sc.nextInt();
+		System.out.println(fact(n));
 		
 		
 	}
