@@ -4,7 +4,7 @@ public class LinkedListUse {
 	
 	public static void main(String[] args) {
 		Node<Integer> head = takeInputOfLL();
-		printLL(appendLastNNodeToFirst(head, 4));
+		printLL(evenAfterOddLL(head));
 	}
 	
 	public static Node<Integer> takeInputOfLL() {
@@ -431,6 +431,16 @@ public class LinkedListUse {
 		return -1;
 	}
 	
+	public static void printLLReverseRecursive2(Node<Integer> head) {
+		if(head.next == null) {
+			System.out.print(head.data + " ");
+			return;
+		}
+
+		printLLReverseRecursive2(head.next);
+		System.out.print(head.data + " ");
+	}
+
 	public static Node<Integer> appendLastNToFirst(Node<Integer> head, int n) {
 		int size = lengthOfLL(head);
 		
@@ -456,6 +466,24 @@ public class LinkedListUse {
 		return newHead;
 	}
 	
+	public static boolean checkPalindrome(String str, int si, int ei) {
+		if(si >= ei) return true;
+
+		if(str.charAt(si) != str.charAt(ei)) return false;
+		return checkPalindrome(str, si+1, ei-1);
+	}
+
+	public static boolean checkPalindromeLL(Node<Integer> head) {
+		StringBuilder sb = new StringBuilder();
+		Node<Integer> temp = head;
+		while(temp != null) {
+			sb.append(temp.data);
+			temp = temp.next;
+		}
+		String str = sb.toString();
+		return checkPalindrome(str, 0, str.length()-1);
+	}
+
 	public static void printReverseLLRecursive(Node<Integer> head) {
 		
 		if(head == null || head.next == null) {
@@ -467,6 +495,21 @@ public class LinkedListUse {
 		System.out.print(head.data + " ");
 	}
 	
+	public static Node<Integer> removeConsecutiveDuplicates2(Node<Integer> head) {
+		Node<Integer> head1 = head;
+		Node<Integer> head2 = head;
+
+		while(head1 != null) {
+			while(head2 != null && head2.data == head1.data) {
+				head2 = head2.next;
+			}
+			head1.next = head2;
+			head1 = head1.next;
+		}
+
+		return head;
+	}
+
 	public static boolean checkPalindromeInLL(Node<Integer> head, int si, int ei) {
 		if(si >= ei) return true;
 		
@@ -502,52 +545,48 @@ public class LinkedListUse {
 		return head;
 	}
 	
+	public static Node<Integer> evenAfterOddLL(Node<Integer> head) {
+		Node<Integer> temp = head, evenHead = null, evenTail = null, oddHead = null, oddTail = null;
+
+		while(temp != null) {
+			if(temp.data % 2 == 0) {
+				if(evenHead == null) {
+					evenHead = temp;
+					evenTail = temp;
+					temp = temp.next;
+				} else {
+					evenTail.next = temp;
+					evenTail = evenTail.next;
+					temp = temp.next;
+				}
+			} else {
+				if(oddHead == null) {
+					oddHead = temp;
+					oddTail = temp;
+					temp = temp.next;
+				} else {
+					oddTail.next = temp;
+					oddTail = oddTail.next;
+					temp = temp.next;
+				}
+			}
+		}
+
+		if(evenHead == null) return oddHead;
+		if(oddHead == null) return evenHead;
+
+		if(evenTail.next != null) evenTail.next = null;
+		if(oddTail.next != null) oddTail.next = null;
+
+		oddTail.next = evenHead;
+		return oddHead;
+	}
+
 	public static int findANodeInLL(Node<Integer> head, int n, int pos) {
 		if(head == null) return -1;
 		
 		if(head.data == n) return pos;
 		return findANodeInLL(head.next, n, pos+1);
-	}
-	
-	public static Node<Integer> evenAfterOddLL(Node<Integer> head) {
-		
-		if(head == null) return head;
-		
-		Node<Integer> eh = null, et = null;
-		Node<Integer> oh = null, ot = null;
-		Node<Integer> temp = head;
-		
-		while(temp != null) {
-			if(temp.data % 2 == 0) { //Node is even
-				if(eh == null) {
-					eh = temp;
-					et = temp;
-					temp = temp.next;
-				} else {
-					et.next = temp;
-					temp = temp.next;
-					et = et.next;
-				}
-			} else {  //Node is odd
-				if(oh == null) {
-					oh = temp;
-					ot = temp;
-					temp = temp.next;
-				} else {
-					ot.next = temp;
-					ot = ot.next;
-					temp = temp.next;
-				}
-			}
-		}
-		
-		if(eh != null && oh != null) {
-			ot.next = null;
-			et.next = null;
-		}
-		
-		ot.next = eh;
-		return oh;
 	}
 	
 	public static Node<Integer> swapTwoNodes(Node<Integer> head, int i, int j) {
