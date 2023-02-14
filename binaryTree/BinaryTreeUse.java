@@ -21,16 +21,21 @@ public class BinaryTreeUse {
 	}
 	
 	public static void printBinaryTree(BinaryTreeNode<Integer> root) {
-		
+		String str = root.data + ":";
+		if(root.left != null) str += root.left.data + ",";
+		if(root.right != null) str += root.right.data + ",";
+
+		System.out.println(str);
+
+		if(root.left != null) printBinaryTree(root.left);
+		if(root.right != null) printBinaryTree(root.right);
 	}
 	
 	public static void main(String[] args) {
-	
-		BinaryTreeNode<Integer> root = new BinaryTreeNode<Integer>(1);
-		BinaryTreeNode<Integer> node1 = new BinaryTreeNode<>(2);
-		root.left = node1;
-		BinaryTreeNode<Integer> node2 = new BinaryTreeNode<Integer>(3);
-		root.right = node2;
+
+		Scanner sc = new Scanner(System.in);
+		BinaryTreeNode<Integer> root = takeInput(sc);
+		printBinaryTree(root);
 		
 	}
 }
