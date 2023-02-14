@@ -4,7 +4,7 @@ public class LinkedListUse {
 	
 	public static void main(String[] args) {
 		Node<Integer> head = takeInputOfLL();
-		System.out.println(findIndexOfNodeInLLRecursively(head, 0, 50));
+		printLL(appendLastNNodeToFirst(head, 4));
 	}
 	
 	public static Node<Integer> takeInputOfLL() {
@@ -392,6 +392,31 @@ public class LinkedListUse {
 		return head;
 	}
 	
+	public static Node<Integer> appendLastNNodeToFirst(Node<Integer> head, int n) {
+		Node<Integer> temp = head;
+		while(temp.next != null) temp = temp.next;
+
+		Node<Integer> currentTail = temp;
+
+		int size = lengthOfLL(head);
+		int index = size - n - 1; //Index of last node from the starting before the first node of the new LL
+
+		if(index == -1) return head; //This will in only one case when n is equal to size of ll
+
+		temp = head;
+		int pos = 0;
+
+		while(pos < index) { //Here i can keep it as != also because the case when n is equal to size is handled above
+			temp = temp.next;
+			pos++;
+		}
+
+		Node<Integer> newHead = temp.next;
+		currentTail.next = head;
+		temp.next = null;  //temp is going to be the new Tail
+		return newHead;
+	}
+
 	public static int findNodeInLL(Node<Integer> head, int n) {
 		
 		Node<Integer> temp = head;
