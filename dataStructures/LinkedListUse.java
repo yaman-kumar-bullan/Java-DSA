@@ -4,9 +4,7 @@ public class LinkedListUse {
 	
 	public static void main(String[] args) {
 		Node<Integer> head = takeInputOfLL();
-		Node<Integer> head2 = takeInputOfLL();
-		printLL(mergeTwoSortedLinkedLists2(head, head2));
-		// printLL(head);
+		printLL(insertRecursively2(head,4,10));
 	}
 	
 	public static Node<Integer> takeInputOfLL() {
@@ -172,7 +170,7 @@ public class LinkedListUse {
 		return temp.data;
 	}
 	
-	public static Node<Integer> mergeTwoSortedLinkedLists2(Node<Integer> head1, Node<Integer> head2) {
+	public static Node<Integer> mergeTwoSortedLinkedLists2(Node<Integer> head1, Node<Integer> head2) {  //Different Implementaion
 		if(head1 == null) return head2;
 		if(head2 == null) return head1;
 		//If both are null then upper statements will always be valid
@@ -241,6 +239,34 @@ public class LinkedListUse {
 		return ansHead;
 	}
 	
+	public static int indexOfMidNodeInLL(Node<Integer> head) {
+		int n = lengthOfLL(head);
+		return n%2==0 ? (n/2)-1 : (n-1)/2;
+	}
+
+	public static Node<Integer> mergeSort2(Node<Integer> head) {
+		if(head == null || head.next == null) return head;
+
+		int mid = indexOfMidNodeInLL(head);  //Index of mid Node
+
+		int index = 0;
+		Node<Integer> temp = head;
+
+		while(index != mid) {
+			temp = temp.next;
+			index++;
+		}
+
+		Node<Integer> head2 = temp.next;
+		Node<Integer> head1 = head;
+		temp.next = null;
+
+		head1 = mergeSort2(head1);
+		head2 = mergeSort2(head2);
+		Node<Integer> ansHead = mergeTwoSortedLinkedLists(head1, head2);
+		return ansHead;
+	}
+
 	public static Node<Integer> mergeSort(Node<Integer> head) {
 		if(head == null || head.next == null) return head;
 		
@@ -297,6 +323,18 @@ public class LinkedListUse {
 		return prev;
 	}
 	
+	public static Node<Integer> insertRecursively2(Node<Integer> head, int pos, int data) {
+		if(pos == 0) {
+			Node<Integer> newNode = new Node<>(data);
+			newNode.next = head;
+			return newNode;
+		}
+
+		Node<Integer> smallHead = insertRecursively2(head.next, pos-1, data);
+		head.next = smallHead;
+		return head;
+	}
+
 	public static Node<Integer> insertRecursively(Node<Integer> head, int pos, int data) {
 		if(pos == 0) {
 			Node<Integer> newNode = new Node<>(data);
