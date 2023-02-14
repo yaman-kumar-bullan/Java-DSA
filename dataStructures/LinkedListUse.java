@@ -4,7 +4,9 @@ public class LinkedListUse {
 	
 	public static void main(String[] args) {
 		Node<Integer> head = takeInputOfLL();
-		System.out.println(lengthOfLL2(head));
+		Node<Integer> head2 = takeInputOfLL();
+		printLL(mergeTwoSortedLinkedLists2(head, head2));
+		// printLL(head);
 	}
 	
 	public static Node<Integer> takeInputOfLL() {
@@ -115,18 +117,6 @@ public class LinkedListUse {
 		return head;
 	}
 	
-	public static int lengthOfLL2(Node<Integer> head) {
-		int index = 0;
-		Node<Integer> temp = head;
-		
-		while(temp != null) {
-			temp = temp.next;
-			index++;
-		}
-		
-		return index;
-	}
-	
 	public static int lengthOfLL(Node<Integer> head) {
 		int index = 0;
 		Node<Integer> temp = head;
@@ -160,25 +150,65 @@ public class LinkedListUse {
 	}
 	
 	public static int midPointOfLL(Node<Integer> head) {
-		int n = lengthOfLL(head); //Size of ll
-		
-		int pos;
-		
-		if(n%2 == 0) pos = (n/2)-1;
-		else pos = n/2;
-		
 		int index = 0;
 		Node<Integer> temp = head;
-		
+		while(temp != null) {
+			temp = temp.next;
+			index++;
+		}
+
+		int n = index; //size
+
+		int pos = n%2==0 ? (n/2)-1 : (n-1)/2;
+
+		index = 0;
+		temp = head;
+
 		while(index != pos) {
 			temp = temp.next;
 			index++;
 		}
-		
+
 		return temp.data;
-		
 	}
 	
+	public static Node<Integer> mergeTwoSortedLinkedLists2(Node<Integer> head1, Node<Integer> head2) {
+		if(head1 == null) return head2;
+		if(head2 == null) return head1;
+		//If both are null then upper statements will always be valid
+
+		Node<Integer> head = null, tail = null;
+
+		while(head1 != null && head2 != null) {
+			if(head1.data <= head2.data) {
+				if(head == null) {
+					head = head1;
+					tail = head1;
+					head1 = head1.next;
+				} else {
+					tail.next = head1;
+					tail = tail.next;
+					head1 = head1.next;
+				}
+			} else {
+				if(head == null) {
+					head = head2;
+					tail = head2;
+					head2 = head2.next;
+				} else {
+					tail.next = head2;
+					tail = tail.next;
+					head2 = head2.next;
+				}
+			}
+		}
+
+		if(head1 != null) tail.next = head1;
+		if(head2 != null) tail.next = head2;
+
+		return head;
+	}
+
 	public static Node<Integer> mergeTwoSortedLinkedLists(Node<Integer> head1, Node<Integer> head2) {
 		Node<Integer> ansHead = null;
 		
