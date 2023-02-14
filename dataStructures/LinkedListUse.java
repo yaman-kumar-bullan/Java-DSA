@@ -4,7 +4,7 @@ public class LinkedListUse {
 	
 	public static void main(String[] args) {
 		Node<Integer> head = takeInputOfLL();
-		printLL(insertRecursively2(head,4,10));
+		System.out.println(findIndexOfNodeInLLRecursively(head, 0, 50));
 	}
 	
 	public static Node<Integer> takeInputOfLL() {
@@ -323,6 +323,14 @@ public class LinkedListUse {
 		return prev;
 	}
 	
+	public static Node<Integer> deleteRecursively2(Node<Integer> head, int pos) {
+		if(pos == 0) return head.next;
+
+		Node<Integer> smallHead = deleteRecursively2(head.next, pos-1);
+		head.next = smallHead;
+		return head;
+	}
+
 	public static Node<Integer> insertRecursively2(Node<Integer> head, int pos, int data) {
 		if(pos == 0) {
 			Node<Integer> newNode = new Node<>(data);
@@ -347,6 +355,35 @@ public class LinkedListUse {
 		return head;
 	}
 	
+	public static int findNodeInLL2(Node<Integer> head, int n) {
+		Node<Integer> temp = head;
+		int index = 0;
+
+		while(temp != null) {
+			if(temp.data == n) return index;
+			temp = temp.next;
+			index++;
+		}
+
+		return -1;
+	}
+
+	public static boolean findNodeInLL3(Node<Integer> head, int n) {
+		if(head == null) return false;
+		if(head.data == n) return true;
+
+		if(findNodeInLL3(head.next, n)) return true;
+		
+		return false;
+	}
+
+	public static int findIndexOfNodeInLLRecursively(Node<Integer> head, int pos, int n) {
+		if(head == null) return -1;
+		if(head.data == n) return pos;
+
+		return findIndexOfNodeInLLRecursively(head.next, pos+1, n);
+	}
+
 	public static Node<Integer> deleteRecursively(Node<Integer> head, int pos) {
 		if(pos == 0) return head.next; //Head should not be null
 		
