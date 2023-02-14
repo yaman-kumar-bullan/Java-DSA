@@ -589,7 +589,7 @@ public class LinkedListUse {
 		return findANodeInLL(head.next, n, pos+1);
 	}
 	
-	public static Node<Integer> swapTwoNodes(Node<Integer> head, int i, int j) {
+	public static Node<Integer> swapTwoNodes(Node<Integer> head, int i, int j) {  //Don't know
 		Node<Integer> prev = null, curr = head;
 		int index = 0;
 		
