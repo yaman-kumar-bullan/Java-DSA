@@ -127,10 +127,39 @@ public class BinaryTreeUse {
 		}
 	}
 
+	public static int numberOfNodesInBT(BinaryTreeNode<Integer> root) {
+		if(root == null) return 0;
+
+		int count = 0;
+
+		count += numberOfNodesInBT(root.left) + numberOfNodesInBT(root.right); //Here we don't have to check that root.left is null or not because if they will be null then also no problem cause base condition will work in that case
+		return count+1; //To take into consideration the current node
+	}
+
+	public static int heightOfBT(BinaryTreeNode<Integer> root) {
+		if(root == null) return 0;
+
+		int leftHeight = heightOfBT(root.left);
+		int rightHeight = heightOfBT(root.right);
+		int temp = Math.max(leftHeight,rightHeight); 
+		return temp+1; //Considering the root node also
+	}
+
+	public static int diamterOfBT(BinaryTreeNode<Integer> root) {
+		if(root==null) return 0;
+
+		int option1 = heightOfBT(root.left) + heightOfBT(root.right);
+		int option2 = diamterOfBT(root.left);
+		int option3 = diamterOfBT(root.right);
+
+		int finalDiameter = Math.max(option1, Math.max(option2, option3));
+		return finalDiameter;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		printBTLevelWise(root);
+		System.out.println(diamterOfBT(root));
 	}
 }
