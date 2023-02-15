@@ -145,7 +145,10 @@ public class BinaryTreeUse {
 		return temp+1; //Considering the root node also
 	}
 
-	public static int diamterOfBT(BinaryTreeNode<Integer> root) {
+	public static int diamterOfBT(BinaryTreeNode<Integer> root) { 
+		/* The time complexity of this algorithm is (n*h),
+		 * where h is the height of tree & n is number of nodes
+		 */
 		if(root==null) return 0;
 
 		int option1 = heightOfBT(root.left) + heightOfBT(root.right);
@@ -154,6 +157,25 @@ public class BinaryTreeUse {
 
 		int finalDiameter = Math.max(option1, Math.max(option2, option3));
 		return finalDiameter;
+	}
+
+	public static Pair<Integer,Integer> heightDiameter(BinaryTreeNode<Integer> root) {
+		if(root == null) {
+			Pair<Integer,Integer> output = new Pair<>(0,0);
+			return output;
+		}
+
+		Pair<Integer,Integer> lo = heightDiameter(root.left);
+		Pair<Integer,Integer> ro = heightDiameter(root.right);
+
+		int height = Math.max(lo.first, ro.first);
+		int option1 = lo.first + ro.first;
+		int option2 = lo.second;
+		int option3 = ro.second;
+		int diameter = Math.max(option1, Math.max(option2, option3));
+
+		Pair<Integer,Integer> output = new Pair<>(height,diameter);
+		return output;
 	}
 
 	public static void main(String[] args) {
