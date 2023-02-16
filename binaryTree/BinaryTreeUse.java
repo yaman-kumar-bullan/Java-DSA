@@ -288,11 +288,25 @@ public class BinaryTreeUse {
 		boolean isPresent = (findNodeInBT(root.left, x) || findNodeInBT(root.right, x)) ? true : false;
 		return isPresent;
 	}
+
+	public static BinaryTreeNode<Integer> mirror(BinaryTreeNode<Integer> root) {
+		if(root == null) return null;
+
+		BinaryTreeNode<Integer> temp = root.left;
+		root.left = root.right;
+		root.right = temp;
+
+		mirror(root.left);
+		mirror(root.right);
+
+		return root;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		int x = sc.nextInt();
-		System.out.println(findNodeInBT(root, x));
+		printBTLevelWise(root);
+		printBTLevelWise(mirror(root));
 	}
 }
