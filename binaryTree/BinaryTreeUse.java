@@ -159,6 +159,14 @@ public class BinaryTreeUse {
 		return finalDiameter;
 	}
 
+	public static int height(BinaryTreeNode<Integer> root) {
+		return heightDiameter(root).first;
+	}
+
+	public static int diameter(BinaryTreeNode<Integer> root) {
+		return heightDiameter(root).second;
+	}
+
 	public static Pair<Integer,Integer> heightDiameter(BinaryTreeNode<Integer> root) {
 		if(root == null) {
 			Pair<Integer,Integer> output = new Pair<>(0,0);
@@ -168,7 +176,7 @@ public class BinaryTreeUse {
 		Pair<Integer,Integer> lo = heightDiameter(root.left);
 		Pair<Integer,Integer> ro = heightDiameter(root.right);
 
-		int height = Math.max(lo.first, ro.first);
+		int height = 1 + Math.max(lo.first, ro.first);
 		int option1 = lo.first + ro.first;
 		int option2 = lo.second;
 		int option3 = ro.second;
@@ -182,6 +190,8 @@ public class BinaryTreeUse {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		System.out.println(diamterOfBT(root));
+		printBTLevelWise(root);
+		System.out.println(height(root));
+		System.out.println(diameter(root));
 	}
 }
