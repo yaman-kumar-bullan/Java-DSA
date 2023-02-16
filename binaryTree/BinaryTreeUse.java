@@ -302,6 +302,20 @@ public class BinaryTreeUse {
 		return root;
 	}
 
+	public static int sumOfAllNodes(BinaryTreeNode<Integer> root) {
+		if(root == null) return 0;
+
+		int sum = root.data;
+		sum = sum + sumOfAllNodes(root.left) + sumOfAllNodes(root.right);
+		return sum;
+	}
+
+	public static int depth(BinaryTreeNode<Integer> root) {
+		if(root.left == null && root.right == null) return 0;
+
+		return Math.max(depth(root.left),depth(root.right));
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
