@@ -211,14 +211,63 @@ public class BinaryTreeUse {
 		inOrderTraversal(root.right);
 	}
 
+	//Very Very Important Question
+	public static BinaryTreeNode<Integer> constructTreeWithPreAndInOrderTraversal(int[] preOrder, int[] inOrder, int pS, int pE, int iS, int iE) {
+		if(pS>pE || iS>iE) return null; //Base case
+
+		int rootData = preOrder[pS];
+
+		int leftTreeInOrderStarting = iS;
+		int index;
+
+		for(index=iS; index<=iE; index++) {
+			if(inOrder[index] == rootData) break;
+		}
+
+		int leftTreeInOrderEnding = index-1;
+		
+		int leftTreePreOrderStarting = pS+1;
+		int inOrderTreeLength = leftTreeInOrderEnding - leftTreeInOrderStarting + 1;
+		int leftTreePreOrderEnding = leftTreePreOrderStarting + inOrderTreeLength - 1;
+
+		BinaryTreeNode<Integer> root = new BinaryTreeNode<>(rootData);
+		root.left = constructTreeWithPreAndInOrderTraversal(preOrder, inOrder, leftTreePreOrderStarting, leftTreePreOrderEnding, leftTreeInOrderStarting, leftTreeInOrderEnding);
+
+		int rightTreeInOrderStarting = leftTreeInOrderEnding + 2;
+		int rightTreeInOrderEnding = iE;
+		int rightTreePreOrderStarting = leftTreePreOrderEnding+1;
+		int rightTreePreOrderEnding = pE;
+
+		root.right = constructTreeWithPreAndInOrderTraversal(preOrder, inOrder, rightTreePreOrderStarting, rightTreePreOrderEnding, rightTreeInOrderStarting, rightTreeInOrderEnding);
+
+		return root;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		preOrderTraversal(root);
-		System.out.println();
-		postOrderTraversal(root);
-		System.out.println();
-		inOrderTraversal(root);
+		int n = sc.nextInt();
+		int[] preOrder = new int[n];
+		int[] inOrder = new int[n];
+
+		for(int i=0; i<n; i++) {
+			preOrder[i] = sc.nextInt();
+		}
+
+		for(int i=0; i<n; i++) {
+			inOrder[i] = sc.nextInt();
+		}
+		
+		// for(int i=0; i<preOrder.length; i++) {
+		// 	System.out.println(preOrder[i]);
+		// }
+
+		// for(int i=0; i<inOrder.length; i++) {
+		// 	System.out.println(inOrder[i]);
+		// }
+
+		BinaryTreeNode<Integer> root = constructTreeWithPreAndInOrderTraversal(preOrder, inOrder, 0, preOrder.length-1, 0, inOrder.length-1);
+		printBTLevelWise(root);
+
 	}
 }
