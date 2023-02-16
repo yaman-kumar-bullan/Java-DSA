@@ -228,6 +228,10 @@ public class BinaryTreeUse {
 		
 		int leftTreePreOrderStarting = pS+1;
 		int inOrderTreeLength = leftTreeInOrderEnding - leftTreeInOrderStarting + 1;
+		/* We know that
+		 * leftPreE - leftPreS = rightPreE - rightPreS
+		 * So, leftPreE = rightPreE - rightPreS + leftPreS
+		 */
 		int leftTreePreOrderEnding = leftTreePreOrderStarting + inOrderTreeLength - 1;
 
 		BinaryTreeNode<Integer> root = new BinaryTreeNode<>(rootData);
@@ -275,31 +279,20 @@ public class BinaryTreeUse {
 		return root;
 	}
 
+
+	public static boolean findNodeInBT(BinaryTreeNode<Integer> root, int x) {
+		if(root==null) return false;
+
+		if(root.data == x) return true;
+
+		boolean isPresent = (findNodeInBT(root.left, x) || findNodeInBT(root.right, x)) ? true : false;
+		return isPresent;
+	}
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-		int[] postOrder = new int[n];
-		int[] inOrder = new int[n];
-
-		for(int i=0; i<n; i++) {
-			postOrder[i] = sc.nextInt();
-		}
-
-		for(int i=0; i<n; i++) {
-			inOrder[i] = sc.nextInt();
-		}
-		
-		// for(int i=0; i<preOrder.length; i++) {
-		// 	System.out.println(preOrder[i]);
-		// }
-
-		// for(int i=0; i<inOrder.length; i++) {
-		// 	System.out.println(inOrder[i]);
-		// }
-
-		BinaryTreeNode<Integer> root = constructTreeWithPostAndInOrderTraversal(postOrder, inOrder, 0, postOrder.length-1, 0, inOrder.length-1);
-		printBTLevelWise(root);
-
+		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
+		int x = sc.nextInt();
+		System.out.println(findNodeInBT(root, x));
 	}
 }
