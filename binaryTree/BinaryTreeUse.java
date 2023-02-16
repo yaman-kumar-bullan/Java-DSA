@@ -243,15 +243,47 @@ public class BinaryTreeUse {
 		return root;
 	}
 
+	public static BinaryTreeNode<Integer> constructTreeWithPostAndInOrderTraversal(int[] postOrder, int[] inOrder, int pS, int pE, int iS, int iE) {
+		if(pS>pE || iS>iE) return null;
+
+		int rootData = postOrder[pE];
+		BinaryTreeNode<Integer> root = new BinaryTreeNode<>(rootData);
+
+		int leftTreeInOrderStarting = iS;
+		int index;
+
+		for(index = iS; index<=iE; index++) {
+			if(inOrder[index] == rootData) break;
+		}
+
+		int leftTreeInOrderEnding = index-1;
+
+		int inOrderLength = leftTreeInOrderEnding - leftTreeInOrderStarting + 1;
+		
+		int leftTreePostOrderStarting = pS;
+		int leftTreePostOrderEnding = leftTreePostOrderStarting + inOrderLength - 1;
+
+		root.left = constructTreeWithPostAndInOrderTraversal(postOrder, inOrder, leftTreePostOrderStarting, leftTreePostOrderEnding, leftTreeInOrderStarting, leftTreeInOrderEnding);
+
+		int rightTreeInOrderStarting = leftTreeInOrderEnding + 2;
+		int rightTreeInOrderEnding = iE;
+
+		int rightTreePostOrderStarting = leftTreePostOrderEnding+1;
+		int rightTreePostOrderEnding = pE-1;
+
+		root.right = constructTreeWithPostAndInOrderTraversal(postOrder, inOrder, rightTreePostOrderStarting, rightTreePostOrderEnding, rightTreeInOrderStarting, rightTreeInOrderEnding);
+		return root;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();
-		int[] preOrder = new int[n];
+		int[] postOrder = new int[n];
 		int[] inOrder = new int[n];
 
 		for(int i=0; i<n; i++) {
-			preOrder[i] = sc.nextInt();
+			postOrder[i] = sc.nextInt();
 		}
 
 		for(int i=0; i<n; i++) {
@@ -266,7 +298,7 @@ public class BinaryTreeUse {
 		// 	System.out.println(inOrder[i]);
 		// }
 
-		BinaryTreeNode<Integer> root = constructTreeWithPreAndInOrderTraversal(preOrder, inOrder, 0, preOrder.length-1, 0, inOrder.length-1);
+		BinaryTreeNode<Integer> root = constructTreeWithPostAndInOrderTraversal(postOrder, inOrder, 0, postOrder.length-1, 0, inOrder.length-1);
 		printBTLevelWise(root);
 
 	}
