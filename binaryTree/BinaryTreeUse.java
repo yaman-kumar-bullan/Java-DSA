@@ -339,11 +339,57 @@ public class BinaryTreeUse {
 		return false;
 	}
 
+	public static void printLevelOrderTraversal2(BinaryTreeNode<Integer> root) { //Without a new line after every level
+		if(root==null) return;
+
+		QueueUsingLLGenericImplementation<BinaryTreeNode<Integer>> pendingQueues = new QueueUsingLLGenericImplementation<>();
+		pendingQueues.enqueue(root);
+
+		while(!pendingQueues.isEmpty()) {
+			BinaryTreeNode<Integer> front;
+			try {
+				front = pendingQueues.dequeue();
+			} catch(EmptyQueueException e) {
+				return;
+			}
+
+			System.out.print(front.data);
+			
+			if(front.left != null) pendingQueues.enqueue(front.left);
+			if(front.right != null) pendingQueues.enqueue(front.right);
+			System.out.println();
+		}
+	}
+
+	public static void printLevelOrderTraversal(BinaryTreeNode<Integer> root) {
+		if(root==null) return;
+
+		QueueUsingLLGenericImplementation<BinaryTreeNode<Integer>> pendingQueues = new QueueUsingLLGenericImplementation<>();
+		pendingQueues.enqueue(root);
+
+		while(!pendingQueues.isEmpty()) {
+			int nodeCount = pendingQueues.size(); //This is the number of nodes at the current level
+			while(nodeCount-- > 0) { //When this while loop gets completed then all the nodes at this current level would have got printed in a same line
+				BinaryTreeNode<Integer> front;
+				try {
+					front = pendingQueues.dequeue();
+				} catch (EmptyQueueException e) {
+					return;
+				}
+
+				System.out.print(front.data + " ");
+				if(front.left != null) pendingQueues.enqueue(front.left);
+				if(front.right != null) pendingQueues.enqueue(front.right);
+
+			}
+			System.out.println(); //To print the next level nodes in the next line
+		}
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		printBTLevelWise(root);
-		System.out.println(isBalanced(root));
+		printLevelOrderTraversal(root);
 	}
 }
