@@ -1,8 +1,7 @@
 package binaryTree;
-import java.util.Scanner;
+import java.util.*;
 
-import dataStructures.EmptyQueueException;
-import dataStructures.QueueUsingLLGenericImplementation;
+import dataStructures.*;
 
 public class BinaryTreeUse {
 	
@@ -386,10 +385,77 @@ public class BinaryTreeUse {
 		}
 	}
 
+	public static BinaryTreeNode<Integer> removeLeafNodes(BinaryTreeNode<Integer> root) {
+		if(root == null) return null;
+
+		if(root.left == null && root.right == null) return null;  //Base condition
+
+		if(root.left != null) root.left = removeLeafNodes(root.left);
+		if(root.right != null) root.right = removeLeafNodes(root.right);
+
+		return root;
+	}
+
+	public static ArrayList<Node<Integer>> levelWiseLinkedList(BinaryTreeNode<Integer> root) { //5*
+		
+		ArrayList<Node<Integer>> al = new ArrayList<>();
+		
+		if(root == null) return al;
+
+		QueueUsingLLGenericImplementation<BinaryTreeNode<Integer>> pendingQueues = new QueueUsingLLGenericImplementation<>();
+		pendingQueues.enqueue(root);
+
+		while(!pendingQueues.isEmpty()) {
+			Node<Integer> head = null, tail = null;
+			int nodeCount = pendingQueues.size();
+
+			while(nodeCount-- > 0) {
+				BinaryTreeNode<Integer> front;
+				try {
+					front = pendingQueues.dequeue();
+				} catch (EmptyQueueException e) {
+					return al;
+				}
+				Node<Integer> newNode = new Node<>(front.data);
+				if(head == null) {
+					head = newNode;
+					tail = newNode;
+				} else {
+					tail.next = newNode;
+					tail = tail.next;
+				}
+
+				if(front.left != null) pendingQueues.enqueue(front.left);
+				if(front.right != null) pendingQueues.enqueue(front.right);
+			}
+
+			al.add(head);
+		}
+
+		return al;
+	}
+
+	public static void printLinkedList(Node<Integer> head) {
+		if(head == null) return;
+
+		Node<Integer> temp = head;
+		
+		while(temp != null) {
+			System.out.print(temp.data + " ");
+			temp = temp.next;
+		}
+
+		System.out.println();
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		printLevelOrderTraversal(root);
+		ArrayList<Node<Integer>> al = levelWiseLinkedList(root);
+
+		for(int i=0; i<al.size(); i++) {
+			printLinkedList(al.get(i));
+		}
 	}
 }
