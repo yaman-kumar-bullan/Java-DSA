@@ -310,10 +310,33 @@ public class BinaryTreeUse {
 		return sum;
 	}
 
-	public static int depth(BinaryTreeNode<Integer> root) {
+	public static int depth2(BinaryTreeNode<Integer> root) {  //This is not correct
+		/*Here we are assuming that height and depth is not same
+		 *But actually in case of trees both are same
+		 */
 		if(root.left == null && root.right == null) return 0;
 
-		return Math.max(depth(root.left),depth(root.right));
+		int smallDepth;
+		if(root.left == null) smallDepth = depth(root.right);
+		else if(root.right == null) smallDepth = depth(root.left);
+		else smallDepth = Math.max(depth(root.left), depth(root.right));
+
+		return 1 + Math.max(depth(root.left),depth(root.right));
+	}
+
+	public static int depth(BinaryTreeNode<Integer> root) {
+		return heightOfBT(root);
+	}
+
+	public static boolean isBalanced(BinaryTreeNode<Integer> root) {
+		if(root == null) return true;
+
+		int depthLeft = depth(root.left);
+		int depthRight = depth(root.right);
+		int diff = depthLeft >= depthRight ? depthLeft - depthRight : depthRight - depthLeft;
+		if(diff > 1) return false;
+		if(isBalanced(root.left) || isBalanced(root.right)) return true;
+		return false;
 	}
 
 	public static void main(String[] args) {
@@ -321,6 +344,6 @@ public class BinaryTreeUse {
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
 		printBTLevelWise(root);
-		printBTLevelWise(mirror(root));
+		System.out.println(isBalanced(root));
 	}
 }
