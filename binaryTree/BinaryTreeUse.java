@@ -360,7 +360,7 @@ public class BinaryTreeUse {
 		}
 	}
 
-	public static void printLevelOrderTraversal(BinaryTreeNode<Integer> root) {
+	public static void printLevelOrderTraversal(BinaryTreeNode<Integer> root) {  //5* Question
 		if(root==null) return;
 
 		QueueUsingLLGenericImplementation<BinaryTreeNode<Integer>> pendingQueues = new QueueUsingLLGenericImplementation<>();
@@ -435,6 +435,50 @@ public class BinaryTreeUse {
 		return al;
 	}
 
+	public static void printZigZagBinaryTree(BinaryTreeNode<Integer> root) { //4* Question
+		if(root == null) return;
+
+		QueueUsingLLGenericImplementation<BinaryTreeNode<Integer>> pendingQueues = new QueueUsingLLGenericImplementation<>();
+		pendingQueues.enqueue(root);
+		int index = 1;
+
+		while(!pendingQueues.isEmpty()) {
+			int nodeCount = pendingQueues.size();
+			if(index % 2 != 0) {
+				while(nodeCount-- > 0) {
+					BinaryTreeNode<Integer> front;
+					try {
+						front = pendingQueues.dequeue();
+					} catch (EmptyQueueException e) {
+						return;
+					}
+
+					System.out.print(front.data + " ");
+					if(front.left != null) pendingQueues.enqueue(front.left);
+					if(front.right != null) pendingQueues.enqueue(front.right);
+				}
+			} else {
+				ArrayList<BinaryTreeNode<Integer>> al =  new ArrayList<>();
+				while(nodeCount-- > 0) {
+					BinaryTreeNode<Integer> front;
+					try {
+						front = pendingQueues.dequeue();
+					} catch (EmptyQueueException e) {
+						return;
+					}
+					al.add(front);
+					if(front.left !=  null) pendingQueues.enqueue(front.left);
+					if(front.right != null) pendingQueues.enqueue(front.right);
+				}
+				for(int i=al.size()-1; i>=0; i--) {
+					System.out.print(al.get(i).data + " ");
+				}
+			}
+			index++;
+			System.out.println();
+		}
+	}
+
 	public static void printLinkedList(Node<Integer> head) {
 		if(head == null) return;
 
@@ -452,10 +496,6 @@ public class BinaryTreeUse {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		ArrayList<Node<Integer>> al = levelWiseLinkedList(root);
-
-		for(int i=0; i<al.size(); i++) {
-			printLinkedList(al.get(i));
-		}
+		printZigZagBinaryTree(root);
 	}
 }
