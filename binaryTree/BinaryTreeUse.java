@@ -492,10 +492,23 @@ public class BinaryTreeUse {
 		System.out.println();
 	}
 
+	public static void printNodesWithoutSibling(BinaryTreeNode<Integer> root) {
+		if(root == null) return;
+
+		if(root.left == null && root.right  == null) {
+			System.out.println(root.data + " ");
+			return;
+		}
+
+		if(root.left != null) printNodesWithoutSibling(root.left);
+		if(root.right != null) printNodesWithoutSibling(root.right);
+
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		printZigZagBinaryTree(root);
+		printNodesWithoutSibling(root);
 	}
 }
