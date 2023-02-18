@@ -528,11 +528,22 @@ public class BinaryTreeUse {
 		return newNode;
 	}
 
+	public static BinaryTreeNode<Integer> searchNodeInBST(BinaryTreeNode<Integer> root, int x) {
+		if(root == null) return null;
+
+		if(root.data == x) return root;
+
+		if(root.data > x) return searchNodeInBST(root.left, x);
+		else return searchNodeInBST(root.right, x);
+
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		int[] arr = {1,2,3,4,5,6,7};
-		BinaryTreeNode<Integer> root = constructABST(arr, 0, arr.length-1);
-		printBTLevelWise(root);
+		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
+		int x = sc.nextInt();
+		BinaryTreeNode<Integer> ans = searchNodeInBST(root, x);
+		if(ans != null) System.out.println(ans.data);
 	}
 }
