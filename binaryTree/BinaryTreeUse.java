@@ -505,10 +505,34 @@ public class BinaryTreeUse {
 
 	}
 
+	/* From here code of Binary Search Tree has started */
+
+	public static boolean binarySearch(int[] arr, int x, int si, int ei) {
+		if(si>ei) return false;
+
+		int mid = (si+ei)/2;
+
+		if(arr[mid] == x) return true;
+		else if(arr[mid] > x) return binarySearch(arr, x, si, mid-1);
+		else return binarySearch(arr, x, mid+1, ei);
+	}
+
+	public static BinaryTreeNode<Integer> constructABST(int[] arr, int si, int ei) {
+		if(si>ei) return null;  //Base condition
+
+		int mid = (si+ei)/2;
+		BinaryTreeNode<Integer> newNode = new BinaryTreeNode<Integer>(arr[mid]);
+		newNode.left = constructABST(arr, si, mid-1);
+		newNode.right = constructABST(arr, mid+1, ei);
+
+		return newNode;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		printNodesWithoutSibling(root);
+		int[] arr = {1,2,3,4,5,6,7};
+		BinaryTreeNode<Integer> root = constructABST(arr, 0, arr.length-1);
+		printBTLevelWise(root);
 	}
 }
