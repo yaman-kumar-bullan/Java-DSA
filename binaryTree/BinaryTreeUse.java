@@ -557,12 +557,37 @@ public class BinaryTreeUse {
 		}
 	}
 
+	public static int max(BinaryTreeNode<Integer> root) {
+		if(root == null) return Integer.MIN_VALUE;
+
+		if(root.right == null) return root.data;
+		else return max(root.right);
+	}
+
+	public static int min(BinaryTreeNode<Integer> root) {
+		if(root == null) return Integer.MAX_VALUE;
+
+		if(root.left == null) return root.data;
+		else return min(root.left);
+	}
+
+	public static boolean isBST(BinaryTreeNode<Integer> root) { //5*
+		if(root == null) return true;
+
+		int leftMax = max(root.left);
+		int rightMin = min(root.right);
+
+		if(root.data < leftMax || root.data > rightMin) return false;
+
+		if(isBST(root.left) && isBST(root.right)) return true;
+
+		return false;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		int k1 = sc.nextInt();
-		int k2 = sc.nextInt();
-		printBetweenRange(root, k1, k2);
+		System.out.println(isBST(root));
 	}
 }
