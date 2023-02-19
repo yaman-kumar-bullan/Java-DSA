@@ -538,12 +538,31 @@ public class BinaryTreeUse {
 
 	}
 
+	public static void printBetweenRange(BinaryTreeNode<Integer> root, int k1, int k2) {
+		if(k1 > k2) {
+			int temp = k1;
+			k1 = k2;
+			k2 = k1;
+		}
+
+		if(root == null) return;
+
+		if(root.data >= k1 && root.data <= k2) System.out.print(root.data + " ");
+
+		if(root.data <= k1) printBetweenRange(root.right, k1, k2);
+		else if(root.data >= k2) printBetweenRange(root.left, k1, k2);
+		else {
+			printBetweenRange(root.left, k1, k2);
+			printBetweenRange(root.right, k1, k2);
+		}
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		int x = sc.nextInt();
-		BinaryTreeNode<Integer> ans = searchNodeInBST(root, x);
-		if(ans != null) System.out.println(ans.data);
+		int k1 = sc.nextInt();
+		int k2 = sc.nextInt();
+		printBetweenRange(root, k1, k2);
 	}
 }
