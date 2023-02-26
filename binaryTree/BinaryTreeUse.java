@@ -584,10 +584,37 @@ public class BinaryTreeUse {
 		return false;
 	}
 
+		public static Pair<Pair<Integer, Integer>, Boolean> isBST2(BinaryTreeNode<Integer> root) {
+			if(root == null) { 
+				Pair<Integer, Integer> minMax = new Pair<>(Integer.MAX_VALUE, Integer.MIN_VALUE);
+				Pair<Pair<Integer, Integer>, Boolean> ans = new Pair<>(minMax, true);
+				return ans;
+			}
+
+			Pair<Pair<Integer, Integer>, Boolean> leftOutput = isBST2(root.left);
+			Pair<Pair<Integer, Integer>, Boolean> rightOutput = isBST2(root.right);
+
+			int min = Math.min(root.data, Math.min(leftOutput.first.first, rightOutput.first.first));
+			int max = Math.max(root.data, Math.max(leftOutput.first.second, rightOutput.first.second));
+
+			int leftMax = leftOutput.first.second;
+			int rightMin = rightOutput.first.first;
+
+			if(root.data <= leftMax || root.data >= rightMin) {
+				return new Pair<>(new Pair<>(min, max), false);
+			}
+
+			if(leftOutput.second && rightOutput.second) {
+				return new Pair<>(new Pair<>(min, max), true);
+			}
+
+			return new Pair<>(new Pair<>(min, max), false);
+		}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		System.out.println(isBST(root));
+		System.out.println(isBST2(root).second);
 	}
 }
