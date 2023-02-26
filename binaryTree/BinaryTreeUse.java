@@ -622,16 +622,36 @@ public class BinaryTreeUse {
 		return isLeftOk && isRightOk;
 	}
 
+	public static Node<Integer> BSTtoLL(BinaryTreeNode<Integer> root) {
+		if(root == null) return null;
+
+		Node<Integer> newNode = new Node<>(root.data);
+		Node<Integer> head = newNode, current = newNode;
+
+		if(root.left != null) {
+			Node<Integer> leftHead = BSTtoLL(root.left);
+			Node<Integer> temp = leftHead;
+			while(temp.next != null) temp = temp.next;
+			temp.next = head;
+			head = leftHead;
+		}
+
+		if(root.right != null) {
+			Node<Integer> rightHead = BSTtoLL(root.right);
+			current.next = rightHead;
+		}
+
+		return head;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-		int[] arr = new int[n];
-		for(int i=0; i<n; i++) {
-			arr[i] = sc.nextInt();
+		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
+		Node<Integer> head = BSTtoLL(root);
+		while(head != null) {
+			System.out.print(head.data + " ");
+			head = head.next;
 		}
-
-		BinaryTreeNode<Integer> root = constructABST(arr, 0, arr.length-1);
-		preOrderTraversal(root);
 	}
 }
