@@ -584,37 +584,54 @@ public class BinaryTreeUse {
 		return false;
 	}
 
-		public static Pair<Pair<Integer, Integer>, Boolean> isBST2(BinaryTreeNode<Integer> root) {
-			if(root == null) { 
-				Pair<Integer, Integer> minMax = new Pair<>(Integer.MAX_VALUE, Integer.MIN_VALUE);
-				Pair<Pair<Integer, Integer>, Boolean> ans = new Pair<>(minMax, true);
-				return ans;
-			}
+	public static Pair<Pair<Integer, Integer>, Boolean> isBST2(BinaryTreeNode<Integer> root) {
+		if(root == null) { 
+			Pair<Integer, Integer> minMax = new Pair<>(Integer.MAX_VALUE, Integer.MIN_VALUE);
+			Pair<Pair<Integer, Integer>, Boolean> ans = new Pair<>(minMax, true);
+			return ans;
+		}
 
-			Pair<Pair<Integer, Integer>, Boolean> leftOutput = isBST2(root.left);
-			Pair<Pair<Integer, Integer>, Boolean> rightOutput = isBST2(root.right);
+		Pair<Pair<Integer, Integer>, Boolean> leftOutput = isBST2(root.left);
+		Pair<Pair<Integer, Integer>, Boolean> rightOutput = isBST2(root.right);
 
-			int min = Math.min(root.data, Math.min(leftOutput.first.first, rightOutput.first.first));
-			int max = Math.max(root.data, Math.max(leftOutput.first.second, rightOutput.first.second));
+		int min = Math.min(root.data, Math.min(leftOutput.first.first, rightOutput.first.first));
+		int max = Math.max(root.data, Math.max(leftOutput.first.second, rightOutput.first.second));
 
-			int leftMax = leftOutput.first.second;
-			int rightMin = rightOutput.first.first;
+		int leftMax = leftOutput.first.second;
+		int rightMin = rightOutput.first.first;
 
-			if(root.data <= leftMax || root.data >= rightMin) {
-				return new Pair<>(new Pair<>(min, max), false);
-			}
-
-			if(leftOutput.second && rightOutput.second) {
-				return new Pair<>(new Pair<>(min, max), true);
-			}
-
+		if(root.data <= leftMax || root.data >= rightMin) {
 			return new Pair<>(new Pair<>(min, max), false);
 		}
+
+		if(leftOutput.second && rightOutput.second) {
+			return new Pair<>(new Pair<>(min, max), true);
+		}
+
+		return new Pair<>(new Pair<>(min, max), false);
+	}
+
+	public static boolean isBST3(BinaryTreeNode<Integer> root, int min, int max) {
+		if(root == null) return true;
+
+		if(root.data < min || root.data > max) return false;
+
+		boolean isLeftOk = isBST3(root.left, min, root.data-1);
+		boolean isRightOk = isBST3(root.right, root.data+1, max);
+
+		return isLeftOk && isRightOk;
+	}
 
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		System.out.println(isBST2(root).second);
+		int n = sc.nextInt();
+		int[] arr = new int[n];
+		for(int i=0; i<n; i++) {
+			arr[i] = sc.nextInt();
+		}
+
+		BinaryTreeNode<Integer> root = constructABST(arr, 0, arr.length-1);
+		preOrderTraversal(root);
 	}
 }
