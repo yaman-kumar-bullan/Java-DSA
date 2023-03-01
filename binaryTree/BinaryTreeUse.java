@@ -644,14 +644,82 @@ public class BinaryTreeUse {
 		return head;
 	}
 
+	public static ArrayList<Integer> rootToNodePathForBST(BinaryTreeNode<Integer> root, ArrayList<Integer> al, int k) {
+		if(root == null) {
+			return new ArrayList<>();
+		}
+
+		al.add(root.data);
+		if(root.data == k) return al;
+
+		if(root.data > k) return rootToNodePathForBST(root.left, al, k);
+		if(root.data < k) return rootToNodePathForBST(root.right, al, k);
+
+		return new ArrayList<>();
+	}
+
+	public static boolean isPresent(BinaryTreeNode<Integer> root, int k) {
+		if(root == null) {
+			return false;
+		}
+
+		if(root.data == k) return true;
+		if(isPresent(root.left, k) || isPresent(root.right, k)) return true;
+		
+		return false;
+	}
+
+	public static ArrayList<Integer> rootToNodePath(BinaryTreeNode<Integer> root, ArrayList<Integer> al, int k) {
+		if(root == null) {
+			return new ArrayList<>();
+		}
+
+		al.add(root.data);
+		if(root.data == k) return al;
+
+		if(isPresent(root.left, k)) {
+			return rootToNodePath(root.left, al, k);
+		}
+
+		if(isPresent(root.right, k)) {
+			return rootToNodePath(root.right, al, k);
+		}
+
+		return new ArrayList<>();
+	}
+
+	public static ArrayList<Integer> rootToNodePath2(BinaryTreeNode<Integer> root, int k) {  // Not using a arraylist to store all the data
+		if(root == null) return null;
+
+		if(root.data == k) {
+			ArrayList<Integer> al = new ArrayList<>();
+			al.add(root.data);
+			return al;
+		}
+
+		ArrayList<Integer> leftOutput = rootToNodePath2(root.left, k);
+		if(leftOutput != null) {
+			leftOutput.add(root.data);
+			return leftOutput;
+		}
+
+		ArrayList<Integer> rightOutput = rootToNodePath2(root.right, k);
+		if(rightOutput != null) {
+			rightOutput.add(root.data);
+			return rightOutput;
+		}
+
+		return null;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		BinaryTreeNode<Integer> root = takeInputBTLevelWise();
-		Node<Integer> head = BSTtoLL(root);
-		while(head != null) {
-			System.out.print(head.data + " ");
-			head = head.next;
+		int k = sc.nextInt();
+		ArrayList<Integer> al = rootToNodePath2(root,k);
+		for(int i=al.size()-1; i>=0; i--) {
+			System.out.println(al.get(i));
 		}
 	}
 }
