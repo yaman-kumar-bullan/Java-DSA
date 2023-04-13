@@ -23,17 +23,15 @@ public class BinarySearchTree {
          * 
          */
 
-        if(root.left != null) return hasDataHelper(data, root.left);
-        if(root.right != null) return hasDataHelper(data, root.right);
-
-        return false;
+        if(root.data > data) return hasDataHelper(data, root.left);
+        else return hasDataHelper(data, root.right);
     }
 
-    public boolean hasData2(int data) {  //Internally using a recurssive function
+    public boolean hasData(int data) {  //Internally using a recurssive function
         return hasDataHelper(data, root);
     }
 
-    public boolean hasData(int data) {  //Iterative Method
+    public boolean hasData2(int data) {  //Iterative Method
         if(root == null) return false;
 
         // if(root.data == data) return true;
@@ -55,6 +53,26 @@ public class BinarySearchTree {
         }
 
         return false;
+    }
+
+    public BinaryTreeNode<Integer> insertHelper(BinaryTreeNode<Integer> root, int data) {
+        if(root == null)  {
+            BinaryTreeNode<Integer> newNode = new BinaryTreeNode<Integer>(data);
+            root = newNode;
+            return root;
+        }
+
+        if(data > root.data) {
+            root.right = insertHelper(root.right, data);
+        } else {
+            root.left = insertHelper(root.left, data);
+        }
+
+        return root;
+    }
+
+    public void insertData(int data) {
+        
     }
 
 }
